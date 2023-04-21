@@ -142,6 +142,8 @@ export function defineReactive (
   const dep = new Dep()
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
+  // 属性描述值 configurable 为false
+  // vue不做处理
   if (property && property.configurable === false) {
     return
   }
@@ -149,6 +151,7 @@ export function defineReactive (
   // cater for pre-defined getter/setters
   const getter = property && property.get
   const setter = property && property.set
+  // 当前属性 是否注册过 
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }

@@ -82,12 +82,14 @@ export default {
 
   render () {
     const slot = this.$slots.default
+    // 获取keep-alive 中的组件
     const vnode: VNode = getFirstComponentChild(slot)
     const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
     if (componentOptions) {
       // check pattern
       const name: ?string = getComponentName(componentOptions)
       const { include, exclude } = this
+      // 未缓存的组件
       if (
         // not included
         (include && (!name || !matches(include, name))) ||

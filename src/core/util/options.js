@@ -45,6 +45,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 /**
  * Helper that recursively merges two data objects together.
+ * 合并data数据
  */
 function mergeData (to: Object, from: ?Object): Object {
   if (!from) return to
@@ -118,6 +119,7 @@ export function mergeDataOrFn (
   }
 }
 
+// 对合并data的函数进行包装
 strats.data = function (
   parentVal: any,
   childVal: any,
@@ -149,13 +151,13 @@ function mergeHook (
 ): ?Array<Function> {
   const res = childVal
     ? parentVal
-      ? parentVal.concat(childVal)
+      ? parentVal.concat(childVal) // 父级hook在前
       : Array.isArray(childVal)
         ? childVal
         : [childVal]
     : parentVal
   return res
-    ? dedupeHooks(res)
+    ? dedupeHooks(res) // 去重
     : res
 }
 
@@ -237,6 +239,7 @@ strats.watch = function (
 
 /**
  * Other object hashes.
+ * 继承处理
  */
 strats.props =
 strats.methods =
@@ -256,10 +259,13 @@ strats.computed = function (
   if (childVal) extend(ret, childVal)
   return ret
 }
+
+// 和 data 一样返回数据合并函数
 strats.provide = mergeDataOrFn
 
 /**
  * Default strategy.
+ * 优先用自己的属性
  */
 const defaultStrat = function (parentVal: any, childVal: any): any {
   return childVal === undefined
@@ -384,6 +390,7 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
 /**
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
+ * options 合并处理 （extend mixins）
  */
 export function mergeOptions (
   parent: Object,

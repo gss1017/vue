@@ -33,6 +33,8 @@ Vue.prototype.$mount = function (
   // resolve template/el and convert to render function
   if (!options.render) {
     let template = options.template
+    // 是否存在vue模板
+    // 拿到模板数据
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
