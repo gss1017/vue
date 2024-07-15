@@ -14,8 +14,10 @@ let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
+    // 初始化 组件的实例
     const vm: Component = this
     // a uid
+    // vue 组件全局计数，也是对应组件的唯一id
     vm._uid = uid++
 
     let startTag, endTag
@@ -27,14 +29,19 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    // 是否是一个vue实例
     vm._isVue = true
-    // merge options
+    // merge options 合并组件 options
+    // options 选项二次处理
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
+      // vm.$options 
       initInternalComponent(vm, options)
     } else {
+      // 将 Vue 构建函数上的options 与 传入的options 合并
+      // 返回一个新的 options 对象
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -49,10 +56,15 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
+    // 初始化生命周期相关属性
     initLifecycle(vm)
+    // 初始化事件相关的属性
     initEvents(vm)
+    // 初始化组件渲染的必要属性
     initRender(vm)
+    // 调用生命周期
     callHook(vm, 'beforeCreate')
+    // 给实例上挂载 全局注入的属性
     initInjections(vm) // resolve injections before data/props
     initState(vm)
     initProvide(vm) // resolve provide after data/props
@@ -89,22 +101,32 @@ export function initInternalComponent (vm: Component, options: InternalComponent
     opts.staticRenderFns = options.staticRenderFns
   }
 }
-
+/**
+ * @description 处理构造函数的 options
+ * @param {Class<Component>} Ctor -> Vue构造函数
+ */
 export function resolveConstructorOptions (Ctor: Class<Component>) {
+  // 构造函数上的初始配置项
   let options = Ctor.options
   if (Ctor.super) {
+    // Vue 构造函数上的初始配置项
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
+    // 如果与当前构造函数上的options 不一致
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
+      // 缓存 supper options 在当前实例
       Ctor.superOptions = superOptions
       // check if there are any late-modified/attached options (#4976)
+      // 获取差异选项
       const modifiedOptions = resolveModifiedOptions(Ctor)
       // update base extend options
       if (modifiedOptions) {
+        // 与 Object.assign 作用 类似 合并 modifiedOptions 到 extendOptions
         extend(Ctor.extendOptions, modifiedOptions)
       }
+      // 合并 返回一个新对象
       options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
       if (options.name) {
         options.components[options.name] = Ctor

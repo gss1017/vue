@@ -21,6 +21,7 @@ export function isFalse (v: any): boolean %checks {
 }
 
 /**
+ * 是否是原始类型
  * Check if value is primitive.
  */
 export function isPrimitive (value: any): boolean %checks {
@@ -226,6 +227,7 @@ export function toArray (list: any, start?: number): Array<any> {
 }
 
 /**
+ * Object.assign 类似
  * Mix properties into target object.
  */
 export function extend (to: Object, _from: ?Object): Object {

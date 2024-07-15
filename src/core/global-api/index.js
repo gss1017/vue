@@ -23,6 +23,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   const configDef = {}
   configDef.get = () => config
   if (process.env.NODE_ENV !== 'production') {
+    // 禁止直接设置config
     configDef.set = () => {
       warn(
         'Do not replace the Vue.config object, set individual fields instead.'
@@ -48,9 +49,11 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // 2.6 explicit observable API
   Vue.observable = <T>(obj: T): T => {
     observe(obj)
+    // 返回被观察的对象
     return obj
   }
 
+  // options 上挂载 组件、指令集以及 过滤器
   Vue.options = Object.create(null)
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)

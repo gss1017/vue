@@ -52,7 +52,7 @@ const patternTypes: Array<Function> = [String, RegExp, Array]
 
 export default {
   name: 'keep-alive',
-  abstract: true,
+  abstract: true, // 抽象组件
 
   props: {
     include: patternTypes,
@@ -89,7 +89,7 @@ export default {
       // check pattern
       const name: ?string = getComponentName(componentOptions)
       const { include, exclude } = this
-      // 未缓存的组件
+      // 排除命中需要缓存的组件
       if (
         // not included
         (include && (!name || !matches(include, name))) ||

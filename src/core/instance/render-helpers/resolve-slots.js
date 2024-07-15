@@ -9,6 +9,7 @@ export function resolveSlots (
   children: ?Array<VNode>,
   context: ?Component
 ): { [key: string]: Array<VNode> } {
+  // children.length === 0 就是没有slot传递进来
   if (!children || !children.length) {
     return {}
   }

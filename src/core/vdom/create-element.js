@@ -27,12 +27,13 @@ const ALWAYS_NORMALIZE = 2
 // without getting yelled at by flow
 export function createElement (
   context: Component,
-  tag: any,
-  data: any,
+  tag: any, // 标签名称 
+  data: any, // 组件数据
   children: any,
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
+  // 数组|js基本类型
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -64,6 +65,7 @@ export function _createElement (
     tag = data.is
   }
   if (!tag) {
+    // 动态组件 component :is传值为 false 直接生成空的vnode
     // in case of component :is set to falsy value
     return createEmptyVNode()
   }

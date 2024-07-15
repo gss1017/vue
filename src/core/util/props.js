@@ -19,15 +19,17 @@ type PropOptions = {
 };
 
 export function validateProp (
-  key: string,
-  propOptions: Object,
+  key: string, // props 的 key
+  propOptions: Object, // props 定义的类型
   propsData: Object,
   vm?: Component
 ): any {
   const prop = propOptions[key]
+  // 是否是 propsData 自身的属性
   const absent = !hasOwn(propsData, key)
   let value = propsData[key]
   // boolean casting
+  // 是否是 boolean 值
   const booleanIndex = getTypeIndex(Boolean, prop.type)
   if (booleanIndex > -1) {
     if (absent && !hasOwn(prop, 'default')) {
@@ -180,6 +182,7 @@ function assertType (value: any, type: Function): {
  * across different vms / iframes.
  */
 function getType (fn) {
+  // 匹配函数的名字 function Object () {} -> Object
   const match = fn && fn.toString().match(/^\s*function (\w+)/)
   return match ? match[1] : ''
 }

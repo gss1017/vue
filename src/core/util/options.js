@@ -398,15 +398,18 @@ export function mergeOptions (
   vm?: Component
 ): Object {
   if (process.env.NODE_ENV !== 'production') {
+    // 检测 组件中传递过来的 options 是否合法
     checkComponents(child)
   }
 
   if (typeof child === 'function') {
     child = child.options
   }
-
+  // 格式化 props (统一 props 外部不同写法)
   normalizeProps(child, vm)
+  // 格式化 inject 参数
   normalizeInject(child, vm)
+  // 格式化 指令集 将函数指令重写成对象的形式
   normalizeDirectives(child)
 
   // Apply extends and mixins on the child options,

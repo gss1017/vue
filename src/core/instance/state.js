@@ -48,6 +48,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
+  // 初始化 props
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
@@ -60,13 +61,22 @@ export function initState (vm: Component) {
     initWatch(vm, opts.watch)
   }
 }
-
+/**
+ * 
+ * @param {*} vm 
+ * @param {Object} propsOptions 组件的 prop 类型定义 例：{num: {type: Object}}
+ */
 function initProps (vm: Component, propsOptions: Object) {
+  // 外部传递进来的 props 数据
   const propsData = vm.$options.propsData || {}
+  // vue 实例上的 前缀为 ‘_’ 都是私有属性 
+  // 给实例上挂载 props 属性
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
   // instead of dynamic object key enumeration.
+  // 将 prop 的 key 缓存到 数组中
   const keys = vm.$options._propKeys = []
+  // 是否是根实例
   const isRoot = !vm.$parent
   // root instance props should be converted
   if (!isRoot) {
@@ -315,7 +325,7 @@ function createWatcher (
   }
   return vm.$watch(expOrFn, handler, options)
 }
-
+// 组件状态相关 处理函数挂载
 export function stateMixin (Vue: Class<Component>) {
   // flow somehow has problems with directly declared definition object
   // when using Object.defineProperty, so we have to procedurally build up

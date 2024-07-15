@@ -74,7 +74,7 @@ if (process.env.NODE_ENV !== 'production') {
       return target[key]
     }
   }
-
+  // 针对 vm 的代理，取值，与 属性值是否存在于vue实例上
   initProxy = function initProxy (vm) {
     if (hasProxy) {
       // determine which proxy handler to use

@@ -34,13 +34,13 @@ export function initLifecycle (vm: Component) {
 
   // locate first non-abstract parent
   let parent = options.parent
+  // 获取非抽象组件的parent组件
   if (parent && !options.abstract) {
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
     parent.$children.push(vm)
   }
-
   vm.$parent = parent
   vm.$root = parent ? parent.$root : vm
 
@@ -137,7 +137,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     }
   }
 }
-
+// $mount 组件挂载
 export function mountComponent (
   vm: Component,
   el: ?Element,
@@ -164,11 +164,16 @@ export function mountComponent (
       }
     }
   }
+  // 执行当前组件的生命周期
   callHook(vm, 'beforeMount')
 
   let updateComponent
+  // https://jobbym.github.io/2018/06/19/%E4%B8%80%E6%97%A5%E4%B8%80%E7%BB%83-JS-%E4%BA%86%E8%A7%A3Istanbul/
+  // istanbul -> 代码覆盖率工具
+  // ignore if -> 代码片段中的if语句不计入代码覆盖率计算
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    // 性能分析的代码
     updateComponent = () => {
       const name = vm._name
       const id = vm._uid
@@ -340,6 +345,7 @@ export function callHook (vm: Component, hook: string) {
   const info = `${hook} hook`
   if (handlers) {
     for (let i = 0, j = handlers.length; i < j; i++) {
+      // 使用错误处理进行调用 当前钩子函数
       invokeWithErrorHandling(handlers[i], vm, null, vm, info)
     }
   }
